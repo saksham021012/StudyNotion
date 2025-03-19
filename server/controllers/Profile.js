@@ -4,7 +4,7 @@ const { uploadImageToCloudinary } = require("../utils/imageUploader");
 // Method for updating a profile
 exports.updateProfile = async (req, res) => {
 	try {
-		const { dateOfBirth = "", about = "", contactNumber } = req.body;
+		const {dateOfBirth = "", about = "", contactNumber, gender, firstName, lastName } = req.body;
 		const id = req.user.id;
 
 		// Find the profile by id
@@ -15,14 +15,30 @@ exports.updateProfile = async (req, res) => {
 		profile.dateOfBirth = dateOfBirth;
 		profile.about = about;
 		profile.contactNumber = contactNumber;
+		profile.gender = gender;
 
 		// Save the updated profile
 		await profile.save();
+
+		userDetails.firstName = firstName;
+		userDetails.lastName = lastName
+
+		await userDetails.save();
 
 		return res.json({
 			success: true,
 			message: "Profile updated successfully",
 			profile,
+			updatedUserDetails: {
+				firstName: userDetails.firstName,
+				lastName: userDetails.lastName,
+				email: userDetails.email,
+				image: userDetails.image, 
+				gender: profile.gender,
+				dateOfBirth: profile.dateOfBirth,
+				about: profile.about,
+				contactNumber: profile.contactNumber,
+			  },
 		});
 	} catch (error) {
 		console.log(error);
