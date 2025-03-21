@@ -23,11 +23,11 @@ const NestedView = ({ handleChangeEditSectionName }) => {
 
     const handleDeleteSection = async (sectionId) => {
 
-        const result = await deleteSection({
+        const result = await deleteSection(
             sectionId,
-            courseId: course._id,
+            course._id,
             token,
-        })
+        )
 
         if(result){
             dispatch(setCourse(result))
@@ -36,17 +36,25 @@ const NestedView = ({ handleChangeEditSectionName }) => {
     }
 
     const handleDeleteSubSection = async (subSectionId, sectionId) => {
-
         const result = await deleteSubSection({subSectionId, sectionId, token});
-        if(result){
-            dispatch(setCourse(result));
+        
+        if(result) {
+            // Get the updated course
+            const updatedCourse = {...course};
+            
+            // Find the section that was updated and replace it with the result
+            updatedCourse.courseContent = course.courseContent.map(section => 
+                section._id === sectionId ? result : section
+            );
+            
+            dispatch(setCourse(updatedCourse));
         }
+        
         setConfirmationModal(null);
-
     }
 
     return (
-        <div>
+        <div className=''>
             <div className='rounded-lg bg-richblack-700 p-6 px-8'>
                 {course?.courseContent?.map((section) => (
                     <details key={section._id} open>
@@ -58,7 +66,7 @@ const NestedView = ({ handleChangeEditSectionName }) => {
                             </div>
                             <div className='flex items-center gap-x-3'>
                                 <button
-                                    onClick={handleChangeEditSectionName(section._id, section.sectionName)}>
+                                    onClick={()=>handleChangeEditSectionName(section._id, section.sectionName)}>
                                     <MdEdit />
                                 </button>
 
@@ -69,7 +77,7 @@ const NestedView = ({ handleChangeEditSectionName }) => {
                                             text2: "All the lectures in this section will be deleted",
                                             btn1Text: "Delete",
                                             btn2Text: "Cancel",
-                                            btn1Handler: () => handleDeleteSection(section._id),
+                                            btn1Handler: async ()=>{await handleDeleteSection(section._id)},
                                             btn2Handler: () => setConfirmationModal(null),
                                         })
                                     }}
@@ -83,7 +91,7 @@ const NestedView = ({ handleChangeEditSectionName }) => {
 
                         <div>
                             {
-                                section.subSection.map((data) => {
+                                section.subSection.map((data) => (
                                     <div key={data?._id}
                                         onClick={() => setViewSubSection(data)}
                                         className='flex items-center justify-between gap-x-3 border-b-2'
@@ -94,6 +102,7 @@ const NestedView = ({ handleChangeEditSectionName }) => {
                                         </div>
 
                                         <div
+                                        onClick={(e)=> e.stopPropagation()}
                                             className='flex items-center gap-x-3'>
                                             <button
                                                 onClick={() => setEditSubSection({ ...data, sectionId: section._id })}
@@ -117,10 +126,10 @@ const NestedView = ({ handleChangeEditSectionName }) => {
                                         </div>
 
                                     </div>
-                                })
+                                ))
                             }
                             <button
-                                onClick={setAddSubSection(section.id)}
+                                onClick={() => setAddSubSection(section._id)}
                                 className='mt-4 flex items-center gap-x-2 text-yellow-50'
                             >
                                 <AiOutlinePlus />
