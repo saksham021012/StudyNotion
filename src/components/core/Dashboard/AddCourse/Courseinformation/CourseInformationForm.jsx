@@ -10,7 +10,7 @@ import {
   editCourseDetails,
   fetchCourseCategories,
 } from "../../../../../services/operations/courseDetailsAPI"
-import { setCourse, setStep } from "../../../../../slices/courseSlice"
+import { setCourse, setEditCourse, setStep } from "../../../../../slices/courseSlice"
 import { COURSE_STATUS } from "../../../../../utils/constants"
 import IconBtn from "../../../../common/IconBtn"
 import Upload from "../Upload"
@@ -70,7 +70,7 @@ export default function CourseInformationForm() {
       currentValues.coursePrice !== course.price ||
       currentValues.courseTags.toString() !== course.tag.toString() ||
       currentValues.courseBenefits !== course.whatYouWillLearn ||
-      currentValues.courseCategory._id !== course.Category._id ||
+      currentValues.courseCategory !== course.Category._id ||
       currentValues.courseRequirements.toString() !==
       course.instructions.toString() ||
       currentValues.courseImage !== course.thumbnail
@@ -153,6 +153,16 @@ export default function CourseInformationForm() {
     }
     setLoading(false)
   }
+
+  const handleBack = () => {
+    dispatch(setStep(1));
+  
+    if (course) {
+      dispatch(setEditCourse(true));  // Set edit mode if a course exists
+    } else {
+      dispatch(setEditCourse(false)); // Set it as a new course form
+    }
+  };
 
   return (
     <form
