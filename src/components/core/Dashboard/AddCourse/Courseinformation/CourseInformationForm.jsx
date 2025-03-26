@@ -38,8 +38,9 @@ export default function CourseInformationForm() {
     const getCategories = async () => {
       setLoading(true)
       const categories = await fetchCourseCategories()
+      console.log("Fetched categories:", categories)
       if (categories.length > 0) {
-        // console.log("categories", categories)
+        console.log("categories", categories)
         setCourseCategories(categories)
       }
       setLoading(false)
@@ -52,7 +53,7 @@ export default function CourseInformationForm() {
       setValue("coursePrice", course.price)
       setValue("courseTags", course.tag)
       setValue("courseBenefits", course.whatYouWillLearn)
-      setValue("courseCategory", course.Category?._id)
+      setValue("courseCategory", course.Category)
       setValue("courseRequirements", course.instructions)
       setValue("courseImage", course.thumbnail)
     }
@@ -243,8 +244,8 @@ export default function CourseInformationForm() {
             Choose a Category
           </option>
           {!loading &&
-            courseCategories?.map((category) => (
-              <option key={category?._id} value={category?._id}>
+             courseCategories?.map((category) => (
+              <option key={category._id} value={category?._id}>
                 {category?.name}
               </option>
             ))}
