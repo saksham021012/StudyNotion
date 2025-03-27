@@ -10,6 +10,13 @@ html, body {
     background: url("../src/assets/Images/bghome.svg");
 }
 
+.section_heading {
+  --tw-text-opacity: 1;
+  color: rgb(241 242 255 / var(--tw-text-opacity));
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 2rem;
+}
 /* https://10015.io/tools/css-loader-generator */
 .spinner {
     width: 56px;
