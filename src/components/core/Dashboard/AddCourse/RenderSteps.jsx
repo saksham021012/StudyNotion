@@ -1,10 +1,10 @@
+import React from "react"
 import { FaCheck } from "react-icons/fa"
 import { useSelector } from "react-redux"
 
 import CourseBuilderForm from "./CourseBuilder/CourseBuilderForm"
 import CourseInformationForm from "./Courseinformation/CourseInformationForm"
-import PublishCourse from "./PublishCourse"
-
+import PublishCourse from "./PublishCourse/index.jsx"
 
 export default function RenderSteps() {
   const { step } = useSelector((state) => state.course)
@@ -28,10 +28,9 @@ export default function RenderSteps() {
     <>
       <div className="relative mb-2 flex w-full justify-center">
         {steps.map((item) => (
-          <>
+          <React.Fragment key={item.id}>
             <div
-              className="flex flex-col items-center "
-              key={item.id}
+              className="flex flex-col items-center"
             >
               <button
                 className={`grid cursor-default aspect-square w-[34px] place-items-center rounded-full border-[1px] ${
@@ -46,29 +45,26 @@ export default function RenderSteps() {
                   item.id
                 )}
               </button>
-              
             </div>
             {item.id !== steps.length && (
-              <>
+              <React.Fragment key={`divider-${item.id}`}>
                 <div
                   className={`h-[calc(34px/2)] w-[33%]  border-dashed border-b-2 ${
                   step > item.id  ? "border-yellow-50" : "border-richblack-500"
                 } `}
                 ></div>
-              </>
+              </React.Fragment>
             )}
-          </>
+          </React.Fragment>
         ))}
       </div>
 
       <div className="relative mb-16 flex w-full select-none justify-between">
         {steps.map((item) => (
-          <>
+          <React.Fragment key={`label-${item.id}`}>
             <div
               className="flex min-w-[130px] flex-col items-center gap-y-2"
-              key={item.id}
             >
-              
               <p
                 className={`text-sm ${
                   step >= item.id ? "text-richblack-5" : "text-richblack-500"
@@ -77,8 +73,7 @@ export default function RenderSteps() {
                 {item.title}
               </p>
             </div>
-            
-          </>
+          </React.Fragment>
         ))}
       </div>
       {/* Render specific component based on current step */}

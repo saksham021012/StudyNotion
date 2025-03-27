@@ -5,6 +5,7 @@ import { fetchInstructorCourses } from '../../../services/operations/courseDetai
 import IconBtn from "../../common/IconBtn"
 import CoursesTable from './InstructorCourses/CoursesTable'
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css"
+import { VscAdd } from "react-icons/vsc";
 
 
 const MyCourses = () => {
@@ -23,22 +24,20 @@ const MyCourses = () => {
         fetchCourses();
     }, [])
 
-  return (
-    <div className='text-white '>
-        
-        <div className='flex justify-between'> 
-          <h1>My Courses</h1>
+   return (
+      <div>
+        <div className="mb-14 flex items-center justify-between">
+          <h1 className="text-3xl font-medium text-richblack-5">My Courses</h1>
           <IconBtn
-            text={"Add Course"}
+            text="Add Course"
             onclick={() => navigate("/dashboard/add-course")}
-            // todo add icon
-          />
+          >
+            <VscAdd />
+          </IconBtn>
         </div>
-
-        {courses && <CoursesTable courses={courses} setCourses={setCourses}/>}
-
-    </div>
-  )
+        {courses && <CoursesTable courses={courses} setCourses={setCourses} />}
+      </div>
+    )
 }
 
 export default MyCourses

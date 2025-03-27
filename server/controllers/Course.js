@@ -160,7 +160,7 @@ exports.editCourse = async (req, res) => {
         if (key === "tag" || key === "instructions") {
           course[key] = JSON.parse(updates[key]); // Parse JSON arrays
         } else if (key === "Category") {
-          course[key] = new mongoose.Types.ObjectId(updates[key]); // Ensure Category is an ObjectId
+          course[key] = (updates[key]); // Ensure Category is an ObjectId
         } else {
           course[key] = updates[key]; // Directly assign other fields
         }

@@ -63,8 +63,8 @@ function Navbar() {
                     link.title === "Catalog" ? (
                       <div
                         className={`group relative flex cursor-pointer items-center gap-1 ${matchRoute("/catalog/:catalogName")
-                            ? "text-yellow-25"
-                            : "text-richblack-25"
+                          ? "text-yellow-25"
+                          : "text-richblack-25"
                           }`}
                       >
                         <p>{link.title}</p>
@@ -80,6 +80,7 @@ function Navbar() {
                                   to={`/catalog/${subLink.name
                                     .split(" ")
                                     .join("-")
+                                    .replace(/\//g, "-")
                                     .toLowerCase()}`} key={index}>
                                   <p className="text-richblack-800 font-medium hover:text-richblue-600 text-[16px]  px-4 py-2 transition-all duration-200">{subLink.name}</p>
 
@@ -116,7 +117,7 @@ function Navbar() {
           {
             user && user?.accountType != "Instructor" && (
               <Link to="/dashboard/cart" className='relative'>
-                <AiOutlineShoppingCart />
+                <AiOutlineShoppingCart className="text-white"/>
                 {
                   totalItems > 0 && (
                     <span>

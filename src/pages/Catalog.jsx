@@ -3,21 +3,24 @@ import Footer from '../components/common/Footer'
 import { useParams } from 'react-router-dom'
 import { apiConnector } from '../services/apiconnector';
 import { categories } from '../services/apis';
-import { getCatalogPageData } from '../services/operations/pageAndComponentData';
+import { getCatalogaPageData } from '../services/operations/pageAndComponentData';
+import Course_Card from '../components/core/Catalog/Course_Card';
+import CourseSlider from '../components/core/Catalog/CourseSlider';
 
-function Catalog() {
+const Catalog = () => {
 
-    const {catalogName} = useParams();
+    const { catalogName } = useParams();
     const [catalogPageData, setCatalogPageData] = useState(null);
     const [categoryId, setCategoryId] = useState("");
 
-    //fetch all categories
-
+    //Fetch all categories
     useEffect(() => {
-        const getCategories = async() => {
+        const getCategories = async () => {
             const res = await apiConnector("GET", categories.CATEGORIES_API);
-            const category_id = res?.data?.data.filter((ct) => ct.name.split(" ").join("-").toLowerCase() === catalogName)[0]._id;
-            setCategoryId(category_id); 
+            console.log("res: ", res)
+            const category_id =
+                res?.data?.data?.filter((ct) => ct.name.split(" ").join("-").replace(/\//g, "-").toLowerCase() === catalogName)[0]._id;
+            setCategoryId(category_id);
         }
         getCategories();
     }, [catalogName]);
@@ -25,54 +28,75 @@ function Catalog() {
     useEffect(() => {
         const getCategoryDetails = async () => {
             try {
-                if (categoryId) {  // Only fetch data if categoryId is not empty
-                    const res = await getCatalogPageData(categoryId);
-                    setCatalogPageData(res);
-                }
-            } catch (error) {
-                console.log(error);
+                const res = await getCatalogaPageData(categoryId);
+                console.log("PRinting res: ", res);
+                setCatalogPageData(res);
+            }
+            catch (error) {
+                console.log(error)
             }
         }
-        getCategoryDetails();
-    }, [categoryId]);
-    
+        if (categoryId) {
+            getCategoryDetails();
+        }
 
+    }, [categoryId]);
 
 
     return (
         <div className='text-white'>
+
             <div>
                 <p>{`Home / Catalog /`}
-                    <span>{catalogPageData?.data?.selectedCategory?.name}</span>
-                </p>
-                <p>{catalogPageData?.data?.selectedCategory?.name}</p>
-                <p>{catalogPageData?.data?.selectedCategory?.description}</p>
+                    <span>
+                        {catalogPageData?.data?.selectedCategory?.name}
+                    </span></p>
+                <p> {catalogPageData?.data?.selectedCategory?.name} </p>
+                <p> {catalogPageData?.data?.selectedCategory?.description}</p>
             </div>
 
             <div>
-                {/* section 1 */}
+                {/* section1 */}
                 <div>
-                    <div className='flex gap-x-3'>
+                    <div>Courses to get you started</div>
+                    <div className=' flex gap-x-3'>
                         <p>Most Popular</p>
                         <p>New</p>
                     </div>
-                    {/* <CourseSlider/> */}
+                    <div>
+                        <CourseSlider Courses={catalogPageData?.data?.selectedCategory?.courses} />
+                    </div>
                 </div>
 
-                {/* section 2 */}
+                {/* section2 */}
                 <div>
-                    <p>Top Courses</p>
+                    <div>Top Courses in {catalogPageData?.data?.differentCategory?.name}</div>
                     <div>
-                        {/* <CourseSlider/> */}
+                        <CourseSlider Courses={catalogPageData?.data?.differentCategory?.courses} />
                     </div>
                 </div>
 
                 {/* section3 */}
                 <div>
-                    <p>Frequently Bought Together</p>
+                    <div>Frequently Bought</div>
+                    <div className='py-8'>
+
+                        <div className='grid grid-cols-1 lg:grid-cols-2'>
+
+                            {
+                                catalogPageData?.data?.mostSellingCourses?.slice(0, 4)
+                                    .map((course, index) => (
+                                        <Course_Card course={course} key={index} Height={"h-[400px]"} />
+                                    ))
+                            }
+
+                        </div>
+
+                    </div>
                 </div>
+
             </div>
-            <Footer/>
+            <Footer />
         </div>
     )
 }

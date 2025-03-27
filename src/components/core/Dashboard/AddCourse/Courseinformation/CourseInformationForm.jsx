@@ -38,22 +38,21 @@ export default function CourseInformationForm() {
     const getCategories = async () => {
       setLoading(true)
       const categories = await fetchCourseCategories()
-      console.log("Fetched categories:", categories)
       if (categories.length > 0) {
-        console.log("categories", categories)
         setCourseCategories(categories)
       }
       setLoading(false)
     }
     // if form is in edit mode
     if (editCourse) {
-      // console.log("data populated", editCourse)
       setValue("courseTitle", course.courseName)
       setValue("courseShortDesc", course.courseDescription)
       setValue("coursePrice", course.price)
       setValue("courseTags", course.tag)
       setValue("courseBenefits", course.whatYouWillLearn)
-      setValue("courseCategory", course.Category)
+      if (course.Category && course.Category._id) {
+        setValue("courseCategory", course.Category._id)
+      }
       setValue("courseRequirements", course.instructions)
       setValue("courseImage", course.thumbnail)
     }
@@ -64,7 +63,7 @@ export default function CourseInformationForm() {
 
   const isFormUpdated = () => {
     const currentValues = getValues()
-    // console.log("changes after editing form values:", currentValues)
+    console.log("changes after editing form values:", currentValues)
     if (
       currentValues.courseTitle !== course.courseName ||
       currentValues.courseShortDesc !== course.courseDescription ||
@@ -90,7 +89,6 @@ export default function CourseInformationForm() {
         const currentValues = getValues()
         const formData = new FormData()
 
-        // console.log(data)
         formData.append("courseId", course._id)
         if (currentValues.courseTitle !== course.courseName) {
           formData.append("courseName", data.courseTitle)
@@ -107,8 +105,10 @@ export default function CourseInformationForm() {
         if (currentValues.courseBenefits !== course.whatYouWillLearn) {
           formData.append("whatYouWillLearn", data.courseBenefits)
         }
-        if (currentValues.courseCategory !== course.category) {
-          formData.append("Category", data.courseCategory)
+        const categoryId = typeof data.courseCategory === 'object' ? data.courseCategory._id 
+        : data.courseCategory
+        if (currentValues.courseCategory !== course.Category._id) {
+          formData.append("Category", categoryId)
         }
         if (
           currentValues.courseRequirements.toString() !==
@@ -122,7 +122,6 @@ export default function CourseInformationForm() {
         if (currentValues.courseImage !== course.thumbnail) {
           formData.append("thumbnailImage", data.courseImage)
         }
-        console.log("Edit Form data: ", formData)
         setLoading(true)
         const result = await editCourseDetails(formData, token)
         setLoading(false)
@@ -245,8 +244,8 @@ export default function CourseInformationForm() {
           </option>
           {!loading &&
              courseCategories?.map((category) => (
-              <option key={category._id} value={category?._id}>
-                {category?.name}
+              <option key={category._id} value={category._id}>
+                {category.name}
               </option>
             ))}
         </select>

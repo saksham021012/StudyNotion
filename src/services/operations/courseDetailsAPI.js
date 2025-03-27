@@ -119,7 +119,6 @@ export const editCourseDetails = async (data, token) => {
       Authorization: `Bearer ${token}`,
     })
     console.log("EDIT COURSE API RESPONSE............", response)
-    console.log("COURSE DATA:", response?.data?.data)
     if (!response?.data?.success) {
       throw new Error("Could Not Update Course Details")
     }
