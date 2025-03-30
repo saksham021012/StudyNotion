@@ -1,13 +1,11 @@
 export default function GetAvgRating(ratingArr) {
-    if (ratingArr?.length === 0) return 0
-    const totalReviewCount = ratingArr?.reduce((acc, curr) => {
-      acc += curr.rating
-      return acc
-    }, 0)
-  
-    const multiplier = Math.pow(10, 1)
-    const avgReviewCount =
-      Math.round((totalReviewCount / ratingArr?.length) * multiplier) / multiplier
-  
-    return avgReviewCount
-  }
+  if (!Array.isArray(ratingArr) || ratingArr.length === 0) return 0; // Handle undefined, null, or empty array
+
+  const totalReviewCount = ratingArr.reduce((acc, curr) => {
+      return acc + (curr?.rating || 0); // Ensure curr.rating exists, else add 0
+  }, 0);
+
+  const avgReviewCount = totalReviewCount / ratingArr.length;
+
+  return Math.round(avgReviewCount * 10) / 10; // Round to 1 decimal place
+}

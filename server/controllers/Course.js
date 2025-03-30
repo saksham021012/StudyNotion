@@ -239,7 +239,7 @@ exports.getCourseDetails = async (req, res) => {
     //get id
     const { courseId } = req.body;
     //find course details
-    const courseDetails = await Course.find(
+    const courseDetails = await Course.findOne(
       { _id: courseId })
       .populate(
         {
@@ -266,12 +266,24 @@ exports.getCourseDetails = async (req, res) => {
         message: `Could not find the course with ${courseId}`,
       });
     }
+
+    let totalDurationInSeconds = 0
+    courseDetails.courseContent.forEach((content) => {
+      content.subSection.forEach((subSection) => {
+        const timeDurationInSeconds = parseInt(subSection.timeDuration)
+        totalDurationInSeconds += timeDurationInSeconds
+      })
+    })
+
+    const totalDuration = convertSecondsToDuration(totalDurationInSeconds)
     //return response
     return res.status(200).json({
       success: true,
       message: "Course Details fetched successfully",
       data: courseDetails,
+      totalDuration: totalDuration
     })
+
 
   }
   catch (error) {
