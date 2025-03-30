@@ -4,7 +4,7 @@ const SubSection = require("../models/SubSection")
 const Category = require("../models/Category");
 const User = require("../models/User");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
-const CourseProgress = require("../models/CourseProgess")
+const CourseProgress = require("../models/CourseProgress")
 const { convertSecondsToDuration } = require("../utils/secToDuration")
 const mongoose = require("mongoose");
 
