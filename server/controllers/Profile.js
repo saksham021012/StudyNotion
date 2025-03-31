@@ -6,53 +6,58 @@ const User = require("../models/User");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
 const { convertSecondsToDuration } = require("../utils/secToDuration");
 // Method for updating a profile
-exports.updateProfile = async (req, res) => {
-	try {
-		const {dateOfBirth = "", about = "", contactNumber, gender, firstName, lastName } = req.body;
-		const id = req.user.id;
+exports.updateProfile = async(req,res) => {
+    try{
 
-		// Find the profile by id
-		const userDetails = await User.findById(id);
+        //get data 
+		const { dateOfBirth = "", about = "", contactNumber="",firstName,lastName,gender="" } = req.body;
+        // const {gender, dateOfBirth="", about="", contactNumber} = req.body
+
+        //get userId
+        const id = req.user.id;
+
+        //validation
+        // if(!contactNumber )  {
+        //     return res.status(400).json({
+        //         success:false,
+        //         message:"All fields are required",
+        //     })
+        // }
+
+        //find profile
+        const userDetails = await User.findById(id);
 		const profile = await Profile.findById(userDetails.additionalDetails);
 
-		// Update the profile fields
-		profile.dateOfBirth = dateOfBirth;
-		profile.about = about;
-		profile.contactNumber = contactNumber;
-		profile.gender = gender;
+        //update profile
+        userDetails.firstName = firstName || userDetails.firstName;
+		userDetails.lastName = lastName || userDetails.lastName;
+		profile.dateOfBirth = dateOfBirth || profile.dateOfBirth;
+		profile.about = about || profile.about;
+		profile.gender=gender || profile.gender;
+		profile.contactNumber = contactNumber || profile.contactNumber;
+        
+        // Save the updated profile
+        await profile.save();
+        await userDetails.save();
 
-		// Save the updated profile
-		await profile.save();
+        //return response 
+        return res.status(200).json({
+            success:true,
+            message:"Profile Updated successfully",
+            profile,
+			userDetails
+        })
 
-		userDetails.firstName = firstName;
-		userDetails.lastName = lastName
 
-		await userDetails.save();
+    }
+    catch(error){
+        return res.status(501).json({
+            success:false,
+            message:error.message
 
-		return res.json({
-			success: true,
-			message: "Profile updated successfully",
-			profile,
-			updatedUserDetails: {
-				firstName: userDetails.firstName,
-				lastName: userDetails.lastName,
-				email: userDetails.email,
-				image: userDetails.image, 
-				gender: profile.gender,
-				dateOfBirth: profile.dateOfBirth,
-				about: profile.about,
-				contactNumber: profile.contactNumber,
-			  },
-		});
-	} catch (error) {
-		console.log(error);
-		return res.status(500).json({
-			success: false,
-			error: error.message,
-		});
-	}
-};
-
+        })
+    }
+}
 exports.deleteAccount = async (req, res) => {
 	try {
 		// TODO: Find More on Job Schedule
@@ -109,7 +114,10 @@ exports.getAllUserDetails = async (req, res) => {
 
 exports.updateDisplayPicture = async (req, res) => {
     try {
-      const displayPicture = req.files.displayPicture
+      const displayPicture = req.files.pfp
+	  if (!displayPicture) {
+		return res.status(400).json({ success: false, message: 'No file uploaded' });
+	  }
       const userId = req.user.id
       const image = await uploadImageToCloudinary(
         displayPicture,
@@ -134,7 +142,8 @@ exports.updateDisplayPicture = async (req, res) => {
         message: error.message,
       })
     }
-};
+  }
+
   
 exports.getEnrolledCourses = async (req, res) => {
     try {
