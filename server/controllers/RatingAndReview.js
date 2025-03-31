@@ -16,8 +16,8 @@ exports.createRating = async (req, res) => {
         //check if user is enrolled or not
         const courseDetails = await Course.findOne(
             {
-                _id: userId,
-                studentsEnrolled: { $elematch: { $eq: userId } },
+                _id: courseId,
+                studentsEnrolled: { $elemMatch: { $eq: userId } },
             }
         )
 
@@ -77,7 +77,7 @@ exports.createRating = async (req, res) => {
             .status(500)
             .json({
                 success: false,
-                message: "error.message"
+                message: error.message
             })
     }
 }
