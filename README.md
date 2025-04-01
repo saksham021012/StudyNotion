@@ -41,6 +41,42 @@ The UI is designed using **Figma** for a clean and minimal look. The front-end f
 - **Course Management**: Create, update, and delete courses.
 - **Profile Details**: View and edit account details.
 
+### Screenshots:
+
+Category Page
+
+![image](https://github.com/user-attachments/assets/a020d32b-85ab-440d-a0f7-33401fc7b768)
+
+SignUp Page
+
+![image](https://github.com/user-attachments/assets/1ae54e67-ce72-419e-aed1-a93256092433)
+
+Login Page
+
+![image](https://github.com/user-attachments/assets/5fb1c5f4-ffaf-47ba-b10b-9f984378da86)
+
+My Profile(Instructor)
+
+![image](https://github.com/user-attachments/assets/a26f772d-f78a-4c10-8878-ced7faee132a)
+
+Instructor Courses
+
+![image](https://github.com/user-attachments/assets/a47367d0-a280-469d-ba7a-c86bf3d2c79e)
+
+Instructor Dashboard
+
+![image](https://github.com/user-attachments/assets/44c143f3-a6ac-45e5-9c3e-d402b53357eb)
+
+Enroller Courses(Student)
+
+![image](https://github.com/user-attachments/assets/324ba3c5-0faa-41ad-ac21-89a6ce3f1799)
+
+Student Cart
+![image](https://github.com/user-attachments/assets/d2fb0ea7-f4d8-4561-9d67-11b3dfaac0e8)
+
+
+
+
 ### Tools and Libraries:
 - **ReactJS**, **CSS**, **TailwindCSS**: For UI development.
 - **Redux**: For state management.
