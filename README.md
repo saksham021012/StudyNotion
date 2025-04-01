@@ -29,7 +29,6 @@ The UI is designed using **Figma** for a clean and minimal look. The front-end f
 ### Pages for Students:
 - **Homepage**: Introduction and links to course list and user details.
 - **Course List**: Display of all available courses with descriptions and ratings.
-- **Wishlist**: Display of added courses.
 - **Cart Checkout**: Allows users to complete course purchases.
 - **Course Content**: Displays course content, videos, and materials.
 - **User Details**: Displays student’s account details.
