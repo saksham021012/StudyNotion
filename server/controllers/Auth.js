@@ -36,7 +36,6 @@ exports.sendOTP = async (req, res) => {
             lowerCaseAlphabets: false,
             specialChars: false
         });
-        console.log("Otp generated: ", otp);
 
         //check for unique otp
 
@@ -64,7 +63,6 @@ exports.sendOTP = async (req, res) => {
             .json({
                 success: true,
                 message: "OTP sent successfully",
-                otp,
             })
 
     } catch (error) {
