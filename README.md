@@ -1,4 +1,3 @@
-[**Live Link**](https://study-notion-frontend-ten-pi.vercel.app/)
 
 ![image](https://github.com/user-attachments/assets/c0ffc202-021a-4821-bde7-154f4d6c5bb0)
 # StudyNotion - EdTech Platform
