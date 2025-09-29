@@ -233,7 +233,7 @@ exports.getAllCourses = async (req, res) => {
   }
 };
 
-//getCourseDetails
+//getCourseDetails for course details page
 exports.getCourseDetails = async (req, res) => {
   try {
     //get id
@@ -295,7 +295,7 @@ exports.getCourseDetails = async (req, res) => {
   }
 }
 
-// full course details
+// full course details for user progress page
 exports.getFullCourseDetails = async (req, res) => {
   try {
     const { courseId } = req.body
