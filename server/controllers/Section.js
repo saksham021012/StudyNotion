@@ -1,5 +1,6 @@
 const Section = require("../models/Section");
 const Course = require("../models/Course");
+const SubSection = require("../models/SubSection");
 // CREATE a new section
 exports.createSection = async (req, res) => {
 	try {
@@ -113,7 +114,7 @@ exports.deleteSection = async (req, res) => {
 
 		//delete sub section
 		if (section.subSection && section.subSection.length > 0) {
-			await SubSectionModal.deleteMany({ _id: { $in: section.subSection } });
+			await SubSection.deleteMany({ _id: { $in: section.subSection } });
 		}
 
 		//delete section
